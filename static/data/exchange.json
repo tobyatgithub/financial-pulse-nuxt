@@ -1,0 +1,33 @@
+{
+  "lastUpdate": "2026-03-10 09:30:00",
+  "rates": [
+    {
+      "pair": "USD/CNY",
+      "name": "美元/人民币",
+      "rate": 7.2345,
+      "change": 0.0089,
+      "changePercent": 0.12
+    },
+    {
+      "pair": "GBP/CNY",
+      "name": "英镑/人民币",
+      "rate": 9.2890,
+      "change": -0.0234,
+      "changePercent": -0.25
+    },
+    {
+      "pair": "100JPY/CNY",
+      "name": "100日元/人民币",
+      "rate": 4.8567,
+      "change": 0.0123,
+      "changePercent": 0.25
+    },
+    {
+      "pair": "EUR/CNY",
+      "name": "欧元/人民币",
+      "rate": 7.8912,
+      "change": -0.0156,
+      "changePercent": -0.20
+    }
+  ]
+}

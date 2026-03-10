@@ -1,0 +1,60 @@
+{
+  "lastUpdate": "2026-03-10 09:30:00",
+  "indicators": [
+    {
+      "name": "GDP增速",
+      "value": 5.2,
+      "unit": "%",
+      "period": "2025年Q4",
+      "source": "国家统计局",
+      "trend": "up",
+      "comment": "经济保持稳健增长"
+    },
+    {
+      "name": "制造业PMI",
+      "value": 50.3,
+      "unit": "",
+      "period": "2026年2月",
+      "source": "国家统计局",
+      "trend": "up",
+      "comment": "重回扩张区间"
+    },
+    {
+      "name": "CPI同比",
+      "value": 0.7,
+      "unit": "%",
+      "period": "2026年2月",
+      "source": "国家统计局",
+      "trend": "stable",
+      "comment": "通胀温和"
+    },
+    {
+      "name": "PPI同比",
+      "value": -2.5,
+      "unit": "%",
+      "period": "2026年2月",
+      "source": "国家统计局",
+      "trend": "down",
+      "comment": "工业品价格仍承压"
+    },
+    {
+      "name": "M2增速",
+      "value": 7.8,
+      "unit": "%",
+      "period": "2026年2月",
+      "source": "央行",
+      "trend": "stable",
+      "comment": "货币供应量平稳"
+    },
+    {
+      "name": "M1增速",
+      "value": 3.2,
+      "unit": "%",
+      "period": "2026年2月",
+      "source": "央行",
+      "trend": "up",
+      "comment": "企业活期存款增加"
+    }
+  ],
+  "summary": "经济保持温和复苏态势，制造业回暖，但PPI仍为负值显示需求端仍需政策支持。"
+}

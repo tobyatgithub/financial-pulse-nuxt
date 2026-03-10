@@ -1,0 +1,25 @@
+{
+  "name": "financial-pulse-nuxt",
+  "version": "1.0.0",
+  "description": "Financial Pulse Dashboard - Real-time market data visualization",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "nuxt": "^3.20.2",
+    "vue": "^3.5.13",
+    "vue-router": "^4.5.0",
+    "echarts": "^5.5.1",
+    "vue-echarts": "^7.0.3"
+  },
+  "devDependencies": {
+    "@nuxtjs/tailwindcss": "^6.12.2",
+    "typescript": "^5.7.3"
+  }
+}

@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-zinc-950 text-zinc-100 font-sans antialiased;
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-zinc-900/50 border border-zinc-800 rounded-xl p-4 backdrop-blur-sm;
+  }
+
+  .card-header {
+    @apply text-sm font-medium text-zinc-400 mb-3 flex items-center gap-2;
+  }
+
+  .data-value {
+    @apply text-2xl font-mono font-bold;
+  }
+
+  .data-change {
+    @apply text-sm font-mono;
+  }
+
+  .positive {
+    @apply text-emerald-400;
+  }
+
+  .negative {
+    @apply text-red-400;
+  }
+
+  .neutral {
+    @apply text-zinc-400;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-zinc-900;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-zinc-700 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-zinc-600;
+}

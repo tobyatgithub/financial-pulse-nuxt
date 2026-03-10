@@ -1,0 +1,35 @@
+{
+  "lastUpdate": "2026-03-10 14:30:00",
+  "news": [
+    {
+      "title": "央行：将继续实施稳健的货币政策，保持流动性合理充裕",
+      "source": "财新网",
+      "url": "https://example.com/news/1",
+      "publishedAt": "2026-03-10 14:00:00"
+    },
+    {
+      "title": "A股三大指数集体收涨，创业板指涨0.4%",
+      "source": "新浪财经",
+      "url": "https://example.com/news/2",
+      "publishedAt": "2026-03-10 15:00:00"
+    },
+    {
+      "title": "美联储官员释放鸽派信号，市场预期降息提前",
+      "source": "华尔街见闻",
+      "url": "https://example.com/news/3",
+      "publishedAt": "2026-03-10 13:30:00"
+    },
+    {
+      "title": "证监会：进一步优化IPO和再融资监管安排",
+      "source": "财新网",
+      "url": "https://example.com/news/4",
+      "publishedAt": "2026-03-10 12:00:00"
+    },
+    {
+      "title": "北向资金今日净买入52.3亿元，连续第三日净流入",
+      "source": "新浪财经",
+      "url": "https://example.com/news/5",
+      "publishedAt": "2026-03-10 15:05:00"
+    }
+  ]
+}

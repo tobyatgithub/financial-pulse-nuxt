@@ -1,0 +1,103 @@
+{
+  "lastUpdate": "2026-03-10 15:00:00",
+  "description": "股指期货基差数据（基差 = 期货价格 - 现货价格 × 乘数）",
+  "contracts": [
+    {
+      "code": "IH2403",
+      "name": "上证50期货2403",
+      "futuresPrice": 2678.4,
+      "spotPrice": 2678.9,
+      "multiplier": 300,
+      "basis": -0.5,
+      "basisPercent": -0.019,
+      "expiry": "2026-03-15",
+      "daysToExpiry": 5,
+      "annualizedBasis": -1.38
+    },
+    {
+      "code": "IF2403",
+      "name": "沪深300期货2403",
+      "futuresPrice": 3909.2,
+      "spotPrice": 3912.34,
+      "multiplier": 300,
+      "basis": -3.14,
+      "basisPercent": -0.08,
+      "expiry": "2026-03-15",
+      "daysToExpiry": 5,
+      "annualizedBasis": -5.84
+    },
+    {
+      "code": "IC2403",
+      "name": "中证500期货2403",
+      "futuresPrice": 5656.8,
+      "spotPrice": 5678.9,
+      "multiplier": 200,
+      "basis": -22.1,
+      "basisPercent": -0.39,
+      "expiry": "2026-03-15",
+      "daysToExpiry": 5,
+      "annualizedBasis": -28.47
+    },
+    {
+      "code": "IM2403",
+      "name": "中证1000期货2403",
+      "futuresPrice": 6201.4,
+      "spotPrice": 6234.56,
+      "multiplier": 200,
+      "basis": -33.16,
+      "basisPercent": -0.53,
+      "expiry": "2026-03-15",
+      "daysToExpiry": 5,
+      "annualizedBasis": -38.69
+    },
+    {
+      "code": "IH2404",
+      "name": "上证50期货2404",
+      "futuresPrice": 2675.6,
+      "spotPrice": 2678.9,
+      "multiplier": 300,
+      "basis": -3.3,
+      "basisPercent": -0.12,
+      "expiry": "2026-04-18",
+      "daysToExpiry": 39,
+      "annualizedBasis": -1.13
+    },
+    {
+      "code": "IF2404",
+      "name": "沪深300期货2404",
+      "futuresPrice": 3898.6,
+      "spotPrice": 3912.34,
+      "multiplier": 300,
+      "basis": -13.74,
+      "basisPercent": -0.35,
+      "expiry": "2026-04-18",
+      "daysToExpiry": 39,
+      "annualizedBasis": -3.28
+    },
+    {
+      "code": "IC2404",
+      "name": "中证500期货2404",
+      "futuresPrice": 5623.4,
+      "spotPrice": 5678.9,
+      "multiplier": 200,
+      "basis": -55.5,
+      "basisPercent": -0.98,
+      "expiry": "2026-04-18",
+      "daysToExpiry": 39,
+      "annualizedBasis": -9.18
+    },
+    {
+      "code": "IM2404",
+      "name": "中证1000期货2404",
+      "futuresPrice": 6156.8,
+      "spotPrice": 6234.56,
+      "multiplier": 200,
+      "basis": -77.76,
+      "basisPercent": -1.25,
+      "expiry": "2026-04-18",
+      "daysToExpiry": 39,
+      "annualizedBasis": -11.71
+    }
+  ],
+  "strategyNote": "中证500和中证1000期货贴水较大，适合对冲策略。近月合约贴水较深，存在期现套利空间。"
+}

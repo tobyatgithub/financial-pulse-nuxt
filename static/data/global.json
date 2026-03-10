@@ -1,0 +1,47 @@
+{
+  "lastUpdate": "2026-03-10 15:00:00",
+  "markets": [
+    {
+      "symbol": "^N225",
+      "name": "日经225",
+      "value": 38456.78,
+      "change": 234.56,
+      "changePercent": 0.61
+    },
+    {
+      "symbol": "^KS11",
+      "name": "韩国综合",
+      "value": 2678.90,
+      "change": -12.34,
+      "changePercent": -0.46
+    },
+    {
+      "symbol": "^DJI",
+      "name": "道琼斯",
+      "value": 42345.67,
+      "change": 156.78,
+      "changePercent": 0.37
+    },
+    {
+      "symbol": "^IXIC",
+      "name": "纳斯达克",
+      "value": 17890.12,
+      "change": -45.67,
+      "changePercent": -0.26
+    },
+    {
+      "symbol": "^FTSE",
+      "name": "富时100",
+      "value": 8123.45,
+      "change": 23.45,
+      "changePercent": 0.29
+    },
+    {
+      "symbol": "^GDAXI",
+      "name": "德国DAX",
+      "value": 18234.56,
+      "change": -67.89,
+      "changePercent": -0.37
+    }
+  ]
+}
