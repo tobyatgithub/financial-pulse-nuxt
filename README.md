@@ -18,7 +18,7 @@
 
 ## 技术栈
 
-- **框架**: Nuxt 3.20.2 + Vue 3 + TypeScript
+- **框架**: Nuxt 3.21.1 + Vue 3 + TypeScript
 - **样式**: Tailwind CSS
 - **图表**: ECharts (vue-echarts)
 - **数据源**: AKShare (Python) + yfinance
@@ -33,40 +33,111 @@ npm install
 # 启动开发服务器
 npm run dev
 
-# 生产构建
-npm run build
-
 # 静态生成
 npm run generate
 ```
 
-## 数据更新
-
-### 手动更新数据
-
-```bash
-# 安装 Python 依赖
-pip install -r scripts/requirements.txt
-
-# 运行数据获取脚本
-python scripts/fetch_data.py
-```
-
-### 自动更新
-
-项目使用 GitHub Actions 每小时自动更新数据：
-- `.github/workflows/update-data.yml` - 定时任务配置
-- 自动提交数据更新并触发 Cloudflare Pages 重新部署
-
 ## 部署到 Cloudflare Pages
 
+### 构建配置
+
+| 设置项 | 值 |
+|--------|-----|
+| Build command | `npm run generate` |
+| Build output directory | `dist` |
+| Node version | 20.19.0 (通过 `.node-version` 文件指定) |
+
+### 部署步骤
+
 1. Fork 本仓库
-2. 在 Cloudflare Pages 中连接 GitHub 仓库
-3. 设置构建配置:
-   - 构建命令: `npm run generate`
-   - 输出目录: `.output/public`
-4. 设置环境变量（可选）:
-   - `CF_DEPLOY_HOOK_URL` - Cloudflare Pages Deploy Hook URL
+2. 在 Cloudflare Dashboard → **Pages** → **Create a project**
+3. 连接 GitHub 仓库 `financial-pulse-nuxt`
+4. 填写上述构建配置
+
+---
+
+## 数据更新方案
+
+### 方案对比
+
+| 方案 | 成本 | 实时性 | 复杂度 | 推荐场景 |
+|------|------|--------|--------|----------|
+| **A. GitHub Actions 定时更新** | 免费 | 1小时延迟 | ⭐ 低 | ✅ 推荐 |
+| **B. 本地脚本 + Cron** | 免费 | 可控 | ⭐⭐ 中 | 有自有服务器 |
+| **C. Cloudflare Workers + KV** | 免费额度 | 近实时 | ⭐⭐⭐ 高 | 需要实时数据 |
+
+---
+
+### 方案 A: GitHub Actions 定时更新 (推荐)
+
+**原理**: GitHub Actions 每小时运行 Python 脚本，获取数据后提交到仓库，触发 Cloudflare Pages 重新部署。
+
+**配置步骤**:
+
+1. **获取 Cloudflare Deploy Hook URL**:
+   - 进入 Cloudflare Dashboard → 你的 Pages 项目
+   - **Settings** → **Builds & deployments**
+   - 滚动到底部找到 **Deploy hooks**
+   - 点击 **Create deploy hook**，命名为 "GitHub Actions"
+   - 复制生成的 URL (格式类似 `https://api.cloudflare.com/client/v4/pages/webhooks/xxx`)
+
+2. **配置 GitHub Secret**:
+   - 进入 GitHub 仓库 → **Settings** → **Secrets and variables** → **Actions**
+   - 点击 **New repository secret**
+   - Name: `CF_DEPLOY_HOOK_URL`
+   - Value: 粘贴上一步复制的 Deploy Hook URL
+   - 点击 **Add secret**
+
+3. **启用 Workflow**:
+   - 仓库中的 `.github/workflows/update-data.yml` 已配置好
+   - 默认每小时整点运行
+   - 也可以在 Actions 页面手动触发
+
+**优点**: 完全免费、配置简单、无需服务器
+**缺点**: 数据延迟最多1小时
+
+---
+
+### 方案 B: 本地脚本 + Cron
+
+**原理**: 在本地或服务器上使用 cron 定时任务运行 Python 脚本，手动或自动同步数据。
+
+**配置步骤**:
+
+```bash
+# 1. 编辑 crontab
+crontab -e
+
+# 2. 添加定时任务 (每小时运行)
+0 * * * * cd /path/to/financial-pulse-nuxt && python scripts/fetch_data.py && git add static/data/*.json && git commit -m "data: update" && git push
+
+# 3. 在 Cloudflare 设置 Deploy Hook (同方案A)
+```
+
+**优点**: 完全控制更新频率
+**缺点**: 需要本地机器/服务器持续运行
+
+---
+
+### 方案 C: Cloudflare Workers + KV (高级)
+
+**原理**: 使用 Cloudflare Workers 运行时动态获取数据，存储到 KV 缓存。
+
+**配置步骤**:
+
+1. 创建 KV namespace:
+   ```
+   wrangler kv:namespace create "FINANCIAL_DATA"
+   ```
+
+2. 创建 Worker API (需要改造成 SSR 模式)
+
+3. 前端改为从 Worker API 获取数据
+
+**优点**: 近实时数据、无需 GitHub 中转
+**缺点**: 配置复杂、有免费额度限制
+
+---
 
 ## 目录结构
 
