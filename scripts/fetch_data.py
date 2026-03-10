@@ -26,52 +26,74 @@ def save_json(filename: str, data: dict):
 def fetch_indices():
     """
     获取 A股/港股指数数据
-    数据源: AKShare
+    数据源: AKShare (东方财富)
     """
     try:
         import akshare as ak
         from datetime import datetime
 
-        # 获取A股指数
-        df_a = ak.stock_zh_index_spot()
-        print(f"A股指数数据: {len(df_a)} 条")
+        indices = []
 
-        # 主要指数代码映射
-        index_mapping = {
-            'sh000001': '上证指数',
-            'sz399001': '深证成指',
-            'sz399006': '创业板指',
-            'sh000016': '上证50',
-            'sh000300': '沪深300',
-            'sh000905': '中证500',
-            'sh000852': '中证1000',
-            'sh932000': '中证2000',
+        # 主要指数代码 (东方财富格式)
+        index_codes = {
+            '000001': {'name': '上证指数', 'symbol': 'sh000001'},
+            '399001': {'name': '深证成指', 'symbol': 'sz399001'},
+            '399006': {'name': '创业板指', 'symbol': 'sz399006'},
+            '000016': {'name': '上证50', 'symbol': 'sh000016'},
+            '000300': {'name': '沪深300', 'symbol': 'sh000300'},
+            '000905': {'name': '中证500', 'symbol': 'sh000905'},
+            '000852': {'name': '中证1000', 'symbol': 'sh000852'},
+            '932000': {'name': '中证2000', 'symbol': 'sh932000'},
         }
 
-        indices = []
-        for _, row in df_a.iterrows():
-            code = row['代码']
-            if code in [k.replace('sh', '').replace('sz', '') for k in index_mapping.keys()]:
-                full_code = f"sh{code}" if code.startswith('0') else f"sz{code}"
-                name = index_mapping.get(full_code, row['名称'])
-
-                indices.append({
-                    'symbol': full_code,
-                    'name': name,
-                    'value': float(row['最新价']),
-                    'change': float(row['涨跌额']),
-                    'changePercent': float(row['涨跌幅'])
-                })
-
-        # 尝试获取港股数据
+        # 尝试使用东方财富实时行情接口
         try:
-            df_hk = ak.stock_hk_index_spot()
-            # 添加恒生指数
+            df = ak.stock_zh_a_spot_em()
+            print(f"A股实时行情数据: {len(df)} 条")
+
+            for _, row in df.iterrows():
+                code = str(row['代码'])
+                if code in index_codes:
+                    info = index_codes[code]
+                    indices.append({
+                        'symbol': info['symbol'],
+                        'name': info['name'],
+                        'value': float(row['最新价']),
+                        'change': float(row['涨跌额']),
+                        'changePercent': float(row['涨跌幅'])
+                    })
+
+        except Exception as e:
+            print(f"⚠️ 东方财富接口失败: {e}, 尝试备用接口")
+
+            # 备用: 使用新浪接口
+            try:
+                df = ak.stock_zh_index_spot_sina()
+                print(f"新浪指数数据: {len(df)} 条")
+
+                for _, row in df.iterrows():
+                    code = str(row['代码'])
+                    if code in index_codes:
+                        info = index_codes[code]
+                        indices.append({
+                            'symbol': info['symbol'],
+                            'name': info['name'],
+                            'value': float(row['最新价']),
+                            'change': float(row['涨跌额']),
+                            'changePercent': float(row['涨跌幅'])
+                        })
+            except Exception as e2:
+                print(f"⚠️ 新浪接口也失败: {e2}")
+                raise e2
+
+        # 获取港股恒生指数
+        try:
+            df_hk = ak.stock_hk_spot_em()
             for _, row in df_hk.iterrows():
-                if '恒生' in row['名称']:
+                if str(row['代码']) == '1' or '恒生' in str(row['名称']):
                     indices.append({
                         'symbol': 'hkHSI',
-                        'name': row['名称'],
+                        'name': '恒生指数',
                         'value': float(row['最新价']),
                         'change': float(row['涨跌额']),
                         'changePercent': float(row['涨跌幅'])
@@ -80,7 +102,7 @@ def fetch_indices():
         except Exception as e:
             print(f"⚠️ 港股数据获取失败: {e}")
 
-        # 添加南华商品指数 (使用示例数据)
+        # 添加南华商品指数 (静态数据，AKShare暂无此接口)
         indices.append({
             'symbol': 'sh000932',
             'name': '南华商品',
@@ -89,11 +111,14 @@ def fetch_indices():
             'changePercent': -0.35
         })
 
-        data = {
-            'lastUpdate': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-            'indices': indices
-        }
-        save_json('indices.json', data)
+        if indices:
+            data = {
+                'lastUpdate': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                'indices': indices
+            }
+            save_json('indices.json', data)
+        else:
+            raise Exception("No index data fetched")
 
     except ImportError:
         print("⚠️ AKShare not installed, using mock data")
@@ -278,7 +303,7 @@ def create_mock_vix():
 def fetch_exchange_rates():
     """
     获取人民币汇率中间价
-    数据源: AKShare
+    数据源: AKShare (中国外汇交易中心)
     """
     try:
         import akshare as ak
@@ -288,25 +313,54 @@ def fetch_exchange_rates():
         try:
             df = ak.fx_spot_quote()
             print(f"汇率数据: {len(df)} 条")
+            print(f"汇率数据列: {df.columns.tolist()}")
+            print(f"汇率数据前2行:\n{df.head(2)}")
 
             rates = []
             pairs = {
                 'USD/CNY': '美元/人民币',
                 'GBP/CNY': '英镑/人民币',
-                'JPY/CNY': '100日元/人民币',
+                '100JPY/CNY': '100日元/人民币',
                 'EUR/CNY': '欧元/人民币'
             }
 
+            # 动态获取列名
+            cols = df.columns.tolist()
+            symbol_col = cols[0] if cols else None
+            # 查找价格列 - 尝试多种可能的列名
+            price_col = None
+            for col in cols:
+                if '价' in col or 'rate' in col.lower() or '汇率' in col:
+                    price_col = col
+                    break
+            if not price_col and len(cols) > 1:
+                price_col = cols[1]
+
+            print(f"使用列: symbol={symbol_col}, price={price_col}")
+
             for _, row in df.iterrows():
-                pair = row.get('货币对', '')
-                if pair in pairs:
-                    rates.append({
-                        'pair': pair,
-                        'name': pairs[pair],
-                        'rate': float(row['买入价']),
-                        'change': 0.0,
-                        'changePercent': 0.0
-                    })
+                symbol = str(row.get(symbol_col, ''))
+                # 尝试多种货币对格式匹配
+                matched_pair = None
+                for pair in pairs:
+                    if pair == symbol or symbol in pair or pair.replace('/', '') in symbol.replace('/', ''):
+                        matched_pair = pair
+                        break
+
+                if matched_pair and price_col:
+                    try:
+                        rate_value = row.get(price_col)
+                        if rate_value:
+                            rates.append({
+                                'pair': matched_pair,
+                                'name': pairs[matched_pair],
+                                'rate': float(rate_value),
+                                'change': 0.0,
+                                'changePercent': 0.0
+                            })
+                    except (ValueError, TypeError) as e:
+                        print(f"⚠️ 解析汇率值失败: {e}")
+                        continue
 
             if rates:
                 data = {
@@ -315,7 +369,8 @@ def fetch_exchange_rates():
                 }
                 save_json('exchange.json', data)
             else:
-                raise Exception("No rates data")
+                print("⚠️ 未找到匹配的汇率数据，使用模拟数据")
+                create_mock_exchange()
 
         except Exception as e:
             print(f"⚠️ 汇率数据获取失败: {e}")
