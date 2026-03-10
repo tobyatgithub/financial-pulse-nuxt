@@ -1,6 +1,6 @@
 {
   "name": "financial-pulse-nuxt",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Financial Pulse Dashboard - Real-time market data visualization",
   "private": true,
   "type": "module",
