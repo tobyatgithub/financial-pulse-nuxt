@@ -1,0 +1,6 @@
+name = "financial-pulse"
+compatibility_date = "2026-03-10"
+pages_build_output_dir = "dist"
+
+[site]
+bucket = "financial-pulse"
